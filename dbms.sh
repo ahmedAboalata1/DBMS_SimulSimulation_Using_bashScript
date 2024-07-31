@@ -3,10 +3,10 @@
 
 while true ;do 
 	echo "Main Menue"
-	echo "1 Create Data Base" 
-	echo "2-List Data Bases"
-	echo "3-Connect to Data Base"
-	echo "4-Drop Data Base"
+	echo "1 Create Database" 
+	echo "2-List Databases"
+	echo "3-Connect to Database"
+	echo "4-Drop Database"
 	echo "5-Exit"
 	read -p "Enter your choice"  choice 
 
@@ -20,3 +20,42 @@ while true ;do
             *) echo "Invalid choice. Please try again." ;;
     esac
 done
+
+create_database(){
+	read -p "Enter Databse" db_name
+	if[-d "./$db_name"]; then
+		echo "Databas already exists"
+
+	else
+		mkdir "./$db_name"
+		echo "Database Created"
+	fi
+}
+
+list_databases(){
+	echo "Databases"
+	ls -d */
+}
+
+connect_to_database(){
+	read -p "Enter Databse name " db_name 
+	if [ -d "./$db_name"]; then
+
+	       	cd "./$db_name"
+		db_menu
+		cd ..
+	else
+		echo  "DataBase Does Not Exist"
+	fi
+}
+
+drop_database(){
+	read -p "Enter Databse name you want to drop" db_name 
+	if [ -d "./$db_name"] ; then
+		rm -r "./$db_name"
+		echo "Database Dropped"
+	else
+		"Database Does not exist"
+	fi	
+}
+
