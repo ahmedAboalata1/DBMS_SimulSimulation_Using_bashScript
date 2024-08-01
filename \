@@ -1,7 +1,7 @@
 #!/bin/bash
 
 create_database(){
-        read -p "Enter Databse Name " db_name
+        read -p "Enter Databse Name" db_name
         if [ -d "./$db_name" ] ; then
                 echo "Databas already exists"
 
@@ -12,15 +12,13 @@ create_database(){
 }
 
 list_databases(){
-	echo "___________________"
-        echo "_____Databases_____"
-	echo "___________________"
+        echo "Databases"
         ls -d */
 }
 
 connect_database(){
         read -p "Enter Database name " db_name
-        if [ -d "./$db_name" ] ; then
+        if [ -d "./$db_name"]; then
                 cd "./$db_name" 
         else
                 echo  "DataBase Does Not Exist"
@@ -28,13 +26,12 @@ connect_database(){
 }
 
 drop_database(){
-        read -p "Enter Databse name you want to drop..." db_name
-        if [ -d "./$db_name" ] ; then
+        read -p "Enter Databse name you want to drop" db_name
+        if [ -d "./$db_name"] ; then
                 rm -r "./$db_name"
-                echo " ________________"
-		echo "Database Dropped "
+                echo "Database Dropped"
         else
-              echo "Database Does not exist "
+                "Database Does not exist"
         fi
 }
 
