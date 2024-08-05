@@ -43,7 +43,7 @@ connect_database(){
 				3) select_from_table ;;
 				4) insert_into_table ;;
 				5) delete_from_table ;;
-				6) upate_table ;;
+				6) update_table ;;
 				7) drop_table ;;
 				8) break  ;;
 				*) echo "Invalid Choice " ;;
