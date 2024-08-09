@@ -1,11 +1,13 @@
 #!/bin/bash
 
+LOG_FILE="/home/$USER/tableErrors.log"
+
 
 list_tables(){
 	echo "______"
 	echo "Tables"
 	echo "______"
-	ls 
+	ls *.dt 2>>$LOG_FILE || echo  "No Tables Found" 
 }
 
 create_table()
@@ -37,36 +39,64 @@ create_table()
 }
 
 drop_table(){
-        ead -p "Plase Enter Table Name" tb_name
-        if [ -f "./$tb_name" ] ; then
-               
-        else
-		echo "Table $tb_name is not exist"
-	fi
-}
+        read -p "Plase Enter Table Name" tb_name
+        if [ -f "./$tb_name.dt" ] ; then
+		read -p "Are you sure you want to drop $table_name? (y/n): " confirm
+	    	case "$confirm" in
+		    	y|Y)
+				rm "$table_name.dt"
+				rm "$table_name.md"
+				echo "Table $table_name Dropped Successfully"
+				;;
+		    	n|N)
+				echo "Dropping cancelled"
+				;;
+		    	*)
+				echo "Unknown option"
+				;;
+		esac
+      	else
+	    	echo "Table $table_name does not exist."
+      	fi
+
+        }
 
 select_from_table(){
-	read -p "Plase Enter Table Name" tb_name
-	if [ -f "./$tb_name" ] ; then
-        
-        else
-		echo "Table $tb_name  is not exists"        
-	fi
-	}
+	echo "hello From select"
+}
 
 insert_into_table(){
-	read -p "Please Enter Table Name" tb_name
-	if [ ! -f "./$tb_name.md" ] ; then 
-		echo "Table $tb_name Does not Exist "
-		return 
-	fi 
-	columns=($(cat "./$tb_name.md"))
-	row_vals=()
-	
-	for col_dif in "${columns[@]}";
-	       	col_name=$(echo $col_def | cut -d':' -f1)
-		col_type=$(echo $col_def | cut -d':' -f2)
+	read -p "Plase Enter Table Name" tb_name
+        metadata_file="./$tb_name.md"
+        data_file="./$tb_name.dt"
+        if [ -f "./$metadata_file" ] ; then
+                columns=$(cut -d: -f1 "$metadata_file")
+                data_types=$(cut -d: -f2 "$metadata_file")
 
+                IFS=$'\n' read -r -d '' -a column_array <<< "$columns"
+                IFS=$'\n' read -r -d '' -a data_type_array <<< "$data_types"
+                values=""
+                for i in "${!column_array[@]}"; do
+                        column="${column_array[$i]}"
+                        data_type="${data_type_array[$i]}"
+                        while true ; do
+                                read -p "Enter value for $column ($data_type): " value
+                                if [[ "$data_type" == "int" && ! "$value" =~ ^-?[0-9]+$ ]]; then
+                                        echo "Invalid input. Please enter an integer for $column."
+                                elif [[ "$data_type" == "string" && "$value" =~ [^[:alnum:][:space:]] ]]; then
+                                        echo "Invalid input. Please enter a string for $column."
+                                else
+                                        break
+                                fi
+                        done
+                        values="$values$value,"
+                        echo "${values%,}" >> "$data_file"
+                       
+                done
+		echo "Row inserted into $table_name ."
+        else
+                echo "Table $tb_name  is not exists"
+        fi
 }
 delete_from_table(){
 	echo "Hello From delete"
