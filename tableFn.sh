@@ -62,8 +62,34 @@ drop_table(){
         }
 
 select_from_table(){
-	echo "hello From select"
-}
+	    read -p "Enter the name of the table to select from: " table_name
+	    metadata_file="./$table_name.md"
+	    data_file="./$table_name.dt"
+	    if [ ! -f "$metadata_file" ] || [ ! -f "$data_file" ]; then
+	    	    echo "Table $table_name does not exist."
+	    	    return
+	    fi
+	    columns=$(cut -d: -f1 "$metadata_file")
+	    IFS=$'\n' read -r -d '' -a column_array <<< "$columns"
+	    echo "Available columns: ${column_array[*]}"
+
+	    read -p "Enter the column name to search by: " search_column
+	    if ! grep -q "^$search_column:" "$metadata_file"; then
+	    	    echo "Column $search_column does not exist."
+	    	    return
+	    fi
+	 
+	    read -p "Enter the value to search for in $search_column ( * to select all):  " search_value
+
+	    col_index=$(grep -n "^$search_column:" "$metadata_file" | cut -d: -f1)
+	    echo "Results:"
+	    echo "========"
+	    while IFS=',' read -r -a row; do
+	    if [[ "$search_value" == "*" ]] || [[ "${row[$((col_index-1))]}" == "$search_value" ]]; then
+	    	    echo "${row[*]}"
+	    fi
+    done < "$data_file"
+    }
 
 insert_into_table(){
 	read -p "Plase Enter Table Name" tb_name
@@ -89,10 +115,9 @@ insert_into_table(){
                                         break
                                 fi
                         done
-                        values="$values$value,"
-                        echo "${values%,}" >> "$data_file"
-                       
+                        values="$values$value,"			
                 done
+		echo "${values%,}" >> "$data_file"
 		echo "Row inserted into $table_name ."
         else
                 echo "Table $tb_name  is not exists"
