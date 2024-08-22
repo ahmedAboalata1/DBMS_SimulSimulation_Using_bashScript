@@ -24,20 +24,26 @@ list_databases(){
 
 connect_database(){
         read -p "Enter Database name " db_name
-        if [ -d "./$db_name" ] ; then
-                cd "./$db_name" 
-	       	while true ; do 
-			echo "1-List all tables "
-			echo "2-Create new table "
-			echo "3-Select From Table "
-			echo "4-Insert into table "
-			echo "5-Delete from table "
- 			echo "6-Update in table "
-			echo "7-Drop table "
-			echo "8-back to main menue"
-			read -p "Enter your choice " tb_choice 
+       if [ -z "$db_name" ]; then
+       	       echo "______________________________"
+	       echo "Database name cannot be empty."
+	       echo "______________________________"
+       	       return
+       fi
+       if [ -d "./$db_name" ] ; then
+	       cd "./$db_name" 
+       	       while true ; do 
+		       echo "1-List all tables "
+		       echo "2-Create new table "
+		       echo "3-Select From Table "
+		       echo "4-Insert into table "
+		       echo "5-Delete from table "
+		       echo "6-Update in table "
+		       echo "7-Drop table "
+		       echo "8-back to main menue"
+		       read -p "Enter your choice " tb_choice 
 
-			case $tb_choice in
+		       case $tb_choice in
 				1) list_tables ;;
 				2) create_table ;;
 				3) select_from_table ;;
