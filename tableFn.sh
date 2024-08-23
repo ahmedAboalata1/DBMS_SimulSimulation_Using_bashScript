@@ -4,22 +4,22 @@ LOG_FILE="/home/$USER/tableErrors.log"
 
 
 list_tables(){
-	echo "______"
-	echo "Tables"
-	echo "______"
+	echo "________"
+	echo " Tables "
+	echo "________"
 	ls *.dt 2>>$LOG_FILE || echo  "No Tables Found" 
 }
 
 create_table()
 {
-       	read -p "Plase Enter Table Name" tb_name
+       	read -p "Please Enter Table Name" tb_name
         if [ -f "./$tb_name" ] ; then
                 echo "Table $tb_name is already exists "
         else
                 touch "./$tb_name.md"
                 touch "./$tb_name.dt"
                 echo "Table $tb_name Created"
-		read -p "Plaese Enter Number Of Columns " num_cols
+		read -p "Please Enter Number Of Columns " num_cols
 		count=1
 		while [ $count -le $num_cols ] ; do
 			read -p "Enter Col name " col_name
@@ -49,7 +49,7 @@ drop_table(){
 				echo "Table $table_name Dropped Successfully"
 				;;
 		    	n|N)
-				echo "Dropping cancelled"
+				echo "Dropping canceled"
 				;;
 		    	*)
 				echo "Unknown option"

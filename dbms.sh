@@ -5,13 +5,15 @@ source ./tableFn.sh
 
 
 create_database(){
-        read -p "Enter Databse Name " db_name
+        read -p "Enter Databsee Name " db_name
         if [ -d "./$db_name" ] ; then
-                echo "Databas already exists"
+                echo "Database already exists"
+                echo "_______________________"
 
         else
                 mkdir "./$db_name"
                 echo "Database Created"
+                echo "________________"
         fi
 }
 
@@ -24,13 +26,13 @@ list_databases(){
 
 connect_database(){
         read -p "Enter Database name " db_name
-       if [ -z "$db_name" ]; then
+        if [ -z "$db_name" ]; then
        	       echo "______________________________"
 	       echo "Database name cannot be empty."
 	       echo "______________________________"
        	       return
-       fi
-       if [ -d "./$db_name" ] ; then
+        fi
+        if [ -d "./$db_name" ] ; then
 	       cd "./$db_name" 
        	       while true ; do 
 		       echo "1-List all tables "
@@ -40,7 +42,7 @@ connect_database(){
 		       echo "5-Delete from table "
 		       echo "6-Update in table "
 		       echo "7-Drop table "
-		       echo "8-back to main menue"
+		       echo "8-back to main menu"
 		       read -p "Enter your choice " tb_choice 
 
 		       case $tb_choice in
@@ -58,12 +60,12 @@ connect_database(){
 		cd ..
 
 	else
-                echo  "DataBase Does Not Exist"
+                echo  "Database Does Not Exist"
         fi
 }
 
 drop_database(){
-        read -p "Enter Databse name you want to drop..." db_name
+        read -p "Enter Data base name you want to drop..." db_name
         if [ -d "./$db_name" ] ; then
                 rm -r "./$db_name"
                 echo " ________________"
@@ -75,7 +77,7 @@ drop_database(){
 
 
 while true ;do 
-	echo "Main Menue"
+	echo "Main Menu"
 	echo "1 Create Database" 
 	echo "2-List Databases"
 	echo "3-Connect to Database"
